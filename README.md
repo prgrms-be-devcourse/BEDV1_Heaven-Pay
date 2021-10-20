@@ -1,4 +1,4 @@
-# Hell Pay
+# Heaven Pay
 
 > 페이는 역시 극락페이
 
