@@ -9,7 +9,7 @@
 |                           팀장                            |                           멘토                            |              팀원               |                           팀원                            |
 | :-------------------------------------------------------: | :-------------------------------------------------------: | :-----------------------------: | :-------------------------------------------------------: |
 |       [Jihun-Hwang](https://github.com/Jihun-Hwang)       |         [HwanChang](https://github.com/HwanChang)         | [UJHa](https://github.com/UJHa) |      [DongGeon0908](https://github.com/DongGeon0908)      |
-| ![](https://avatars.githubusercontent.com/u/55920132?v=4) | ![](https://avatars.githubusercontent.com/u/32251594?v=4) |       사진을 넣어주셔용!        | ![](https://avatars.githubusercontent.com/u/50691225?v=4) |
+| ![](https://avatars.githubusercontent.com/u/55920132?v=4) | ![](https://avatars.githubusercontent.com/u/32251594?v=4) |       ![image](https://user-images.githubusercontent.com/22016754/138271775-da838665-a39d-4d79-bc4f-a07147c64993.png)        | ![](https://avatars.githubusercontent.com/u/50691225?v=4) |
 |                          후니스~                          |                           충성!                           |             톼이드              |                         극락동건                          |
 
 
