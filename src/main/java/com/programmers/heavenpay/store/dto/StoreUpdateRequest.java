@@ -2,10 +2,12 @@ package com.programmers.heavenpay.store.dto;
 
 import com.programmers.heavenpay.annotation.ArbitraryAuthenticationPrincipal;
 import com.programmers.heavenpay.store.entity.Store;
+import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@Getter
 public class StoreUpdateRequest {
     @NotNull
     @ArbitraryAuthenticationPrincipal
