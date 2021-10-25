@@ -18,7 +18,7 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final StoreConverter storeConverter;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Long create(String name, String typeStr, String vendorCode) {
         StoreType type = StoreType.getValue(typeStr);
 
