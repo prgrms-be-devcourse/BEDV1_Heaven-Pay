@@ -1,5 +1,7 @@
 package com.programmers.heavenpay.member.service;
 
+import com.programmers.heavenpay.error.ErrorMessage;
+import com.programmers.heavenpay.error.exception.NotExistsException;
 import com.programmers.heavenpay.member.converter.MemberConverter;
 import com.programmers.heavenpay.member.dto.response.MemberFindResponse;
 import com.programmers.heavenpay.member.entity.Member;
@@ -25,10 +27,10 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberFindResponse findById(Long id) throws Exception {
+    public MemberFindResponse findById(Long id) throws NotExistsException {
         return memberRepository.findById(id)
                 .map(converter::toMemberFindDto)
-                .orElseThrow(() -> new Exception("findById: member_id(" + id + ") not found"));
+                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID));
     }
 
     @Transactional(readOnly = true)
@@ -38,17 +40,17 @@ public class MemberService {
     }
 
     @Transactional
-    public void update(Long id, String email, String name, String phoneNumber, String birth, String gender) throws Exception {
+    public void update(Long id, String email, String name, String phoneNumber, String birth, String gender) throws NotExistsException {
         Member originMember = memberRepository.findById(id)
-                .orElseThrow(() -> new Exception("updateMember: member_id(" + id + ") not found"));
+                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID));
 
         originMember.changeValues(email, name, phoneNumber, birth, gender);
     }
 
     @Transactional
-    public void delete(Long id) throws Exception {
+    public void delete(Long id) throws NotExistsException {
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new Exception("deleteMember: member_id(" + id + ") not found"));
+                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID));
 
         memberRepository.delete(member);
     }
