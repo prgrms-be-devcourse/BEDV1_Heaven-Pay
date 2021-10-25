@@ -2,6 +2,7 @@ package com.programmers.heavenpay.store.service;
 
 import com.programmers.heavenpay.error.ErrorMessage;
 import com.programmers.heavenpay.error.exception.NotDefinitionException;
+import com.programmers.heavenpay.error.exception.NotExistsException;
 import com.programmers.heavenpay.store.converter.StoreConverter;
 import com.programmers.heavenpay.store.dto.response.StoreInfoResponse;
 import com.programmers.heavenpay.store.entity.Store;
@@ -18,7 +19,7 @@ public class StoreService {
     private final StoreConverter storeConverter;
 
     @Transactional(readOnly = true)
-    public Long create(String name, String typeStr, String vendorCode) throws NotDefinitionException {
+    public Long create(String name, String typeStr, String vendorCode) {
         StoreType type = StoreType.getValue(typeStr);
 
         Store store = storeConverter.toStoreEntity(name, type, vendorCode);
@@ -28,18 +29,18 @@ public class StoreService {
     }
 
     @Transactional
-    public void update(Long id, String name, String typeStr, String vendorCode) throws NotDefinitionException {
+    public void update(Long id, String name, String typeStr, String vendorCode) {
         Store store = storeRepository.findById(id)
-                .orElseThrow(() -> new NotDefinitionException(ErrorMessage.NOT_EXIST_STORE_EXCEPTION));
+                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_STORE_EXCEPTION));
 
         StoreType type = StoreType.getValue(typeStr);
         store.changeInfo(name, type, vendorCode);
     }
 
     @Transactional(readOnly = true)
-    public StoreInfoResponse findByName(String name) throws NotDefinitionException {
+    public StoreInfoResponse findByName(String name) {
         Store store = storeRepository.findByName(name)
-                .orElseThrow(() -> new NotDefinitionException(ErrorMessage.NOT_EXIST_STORE_EXCEPTION));
+                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_STORE_EXCEPTION));
 
         return storeConverter.toStoreInfoResponse(store);
     }
@@ -47,7 +48,7 @@ public class StoreService {
     @Transactional
     public void delete(Long id) throws NotDefinitionException {
         Store store = storeRepository.findById(id)
-                .orElseThrow(() -> new NotDefinitionException(ErrorMessage.NOT_EXIST_STORE_EXCEPTION));
+                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_STORE_EXCEPTION));
 
         storeRepository.delete(store);
     }

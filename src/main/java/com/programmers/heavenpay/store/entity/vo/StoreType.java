@@ -1,7 +1,7 @@
 package com.programmers.heavenpay.store.entity.vo;
 
 import com.programmers.heavenpay.error.ErrorMessage;
-import com.programmers.heavenpay.error.exception.NotDefinitionException;
+import com.programmers.heavenpay.error.exception.NotExistsException;
 
 public enum StoreType {
     FOOD,
@@ -11,11 +11,11 @@ public enum StoreType {
     ELECTRONIC,
     COSMETICS;
 
-    public static StoreType getValue(String typeStr) throws NotDefinitionException {
+    public static StoreType getValue(String typeStr) {
         try {
             return StoreType.valueOf(typeStr);
         } catch (IllegalArgumentException e) {
-            throw new NotDefinitionException(ErrorMessage.NOT_EXIST_STORE_TYPE_EXCEPTION);
+            throw new NotExistsException(ErrorMessage.NOT_EXIST_STORE_TYPE_EXCEPTION);
         }
     }
 }
