@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface StoreRepository extends JpaRepository<Store, Long> {
     @Override
-    Optional<Store> findById(Long aLong);
+    Optional<Store> findById(Long id);
 
     @Override
     void delete(Store entity);
