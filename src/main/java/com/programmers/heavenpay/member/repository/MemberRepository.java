@@ -14,4 +14,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Override
     <S extends Member> S save(S entity);
+
+    @Override
+    void delete(Member entity);
 }
