@@ -1,16 +1,16 @@
 package com.programmers.heavenpay.store.entity;
 
 import com.programmers.heavenpay.common.entity.BaseEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.programmers.heavenpay.store.entity.vo.StoreType;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Store extends BaseEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,19 +27,9 @@ public class Store extends BaseEntity<Long> {
     @Column(name = "store_vendor_code", nullable = false)
     private String vendorCode;
 
-    public enum StoreType {
-        //TODO: 구현
-    }
-
-    public void changeName(String name) {
+    public void changeInfo(String name, StoreType type, String vendorCode) {
         this.name = name;
-    }
-
-    public void changeType(StoreType type) {
         this.type = type;
-    }
-
-    public void changeVendorCode(String vendorCode) {
         this.vendorCode = vendorCode;
     }
 }
