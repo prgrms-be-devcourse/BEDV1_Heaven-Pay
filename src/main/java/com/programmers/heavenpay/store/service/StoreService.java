@@ -31,7 +31,7 @@ public class StoreService {
     @Transactional
     public void update(Long id, String name, String typeStr, String vendorCode) {
         Store store = storeRepository.findById(id)
-                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_STORE_EXCEPTION));
+                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_STORE));
 
         StoreType type = StoreType.getValue(typeStr);
         store.changeInfo(name, type, vendorCode);
@@ -40,7 +40,7 @@ public class StoreService {
     @Transactional(readOnly = true)
     public StoreInfoResponse findByName(String name) {
         Store store = storeRepository.findByName(name)
-                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_STORE_EXCEPTION));
+                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_STORE));
 
         return storeConverter.toStoreInfoResponse(store);
     }
@@ -48,7 +48,7 @@ public class StoreService {
     @Transactional
     public void delete(Long id) throws NotDefinitionException {
         Store store = storeRepository.findById(id)
-                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_STORE_EXCEPTION));
+                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_STORE));
 
         storeRepository.delete(store);
     }
