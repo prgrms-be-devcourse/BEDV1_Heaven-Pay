@@ -36,7 +36,7 @@ public class StoreService {
         store.changeInfo(name, type, vendorCode);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public StoreInfoResponse findByName(String name) throws NotDefinitionException {
         Store store = storeRepository.findByName(name)
                 .orElseThrow(() -> new NotDefinitionException(ErrorMessage.NOT_EXIST_STORE_EXCEPTION));
