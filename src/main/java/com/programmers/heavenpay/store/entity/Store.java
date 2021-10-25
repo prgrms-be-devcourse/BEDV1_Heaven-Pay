@@ -27,11 +27,19 @@ public class Store extends BaseEntity<Long> {
     @Column(name = "store_vendor_code", nullable = false)
     private String vendorCode;
 
-    public void changeName(String name){
+    public enum StoreType {
+        //TODO: 구현
+    }
+
+    public void changeName(String name) {
         this.name = name;
     }
 
-    public enum StoreType{
-        //TODO: 구현
+    public void changeType(StoreType type) {
+        this.type = type;
+    }
+
+    public void changeVendorCode(String vendorCode) {
+        this.vendorCode = vendorCode;
     }
 }
