@@ -1,25 +1,29 @@
 package com.programmers.heavenpay.store.converter;
 
-import com.programmers.heavenpay.store.dto.StoreCreateRequest;
-import com.programmers.heavenpay.store.dto.StoreInfoResponse;
+import com.programmers.heavenpay.error.exception.NotDefinitionException;
+import com.programmers.heavenpay.store.dto.response.StoreInfoResponse;
 import com.programmers.heavenpay.store.entity.Store;
+import com.programmers.heavenpay.store.entity.vo.StoreType;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StoreConverter {
-    public Store toStoreEntity(StoreCreateRequest storeCreateRequest) {
+    public Store toStoreEntity(String name, StoreType type, String vendorCode) throws NotDefinitionException {
         return Store.builder()
-                .name(storeCreateRequest.getName())
-                .type(storeCreateRequest.getType())
-                .vendorCode(storeCreateRequest.getVendorCode())
+                .name(name)
+                .type(type)
+                .vendorCode(vendorCode)
                 .build();
     }
 
     public StoreInfoResponse toStoreInfoResponse(Store store) {
         return StoreInfoResponse.builder()
+                .id(store.getId())
                 .name(store.getName())
                 .type(store.getType())
                 .vendorCode(store.getVendorCode())
+                .createdAt(store.getCreatedDate())
+                .modifiedAt(store.getModifiedDate())
                 .build();
     }
 }
