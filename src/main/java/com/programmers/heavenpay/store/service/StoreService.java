@@ -1,10 +1,11 @@
 package com.programmers.heavenpay.store.service;
 
+import com.programmers.heavenpay.error.ErrorMessage;
+import com.programmers.heavenpay.error.exception.NotDefinitionException;
 import com.programmers.heavenpay.store.converter.StoreConverter;
-import com.programmers.heavenpay.store.dto.StoreCreateRequest;
-import com.programmers.heavenpay.store.dto.StoreInfoResponse;
-import com.programmers.heavenpay.store.dto.StoreUpdateRequest;
+import com.programmers.heavenpay.store.dto.response.StoreInfoResponse;
 import com.programmers.heavenpay.store.entity.Store;
+import com.programmers.heavenpay.store.entity.vo.StoreType;
 import com.programmers.heavenpay.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,35 +18,36 @@ public class StoreService {
     private final StoreConverter storeConverter;
 
     @Transactional(readOnly = true)
-    public Long create(StoreCreateRequest storeCreateRequest) {
-        Store store = storeConverter.toStoreEntity(storeCreateRequest);
-        storeRepository.save(store);
+    public Long create(String name, String typeStr, String vendorCode) throws NotDefinitionException {
+        StoreType type = StoreType.getValue(typeStr);
 
-        return store.getId();
+        Store store = storeConverter.toStoreEntity(name, type, vendorCode);
+        Store savedStore = storeRepository.save(store);
+
+        return savedStore.getId();
     }
 
     @Transactional
-    public void update(StoreUpdateRequest storeUpdateRequest) throws Exception {
-        Store store = storeRepository.findById(storeUpdateRequest.getId())
-                .orElseThrow(() -> new Exception("store not found"));
+    public void update(Long id, String name, String typeStr, String vendorCode) throws NotDefinitionException {
+        Store store = storeRepository.findById(id)
+                .orElseThrow(() -> new NotDefinitionException(ErrorMessage.NOT_EXIST_STORE_EXCEPTION));
 
-        store.changeName(storeUpdateRequest.getName());
-        store.changeType(storeUpdateRequest.getType());
-        store.changeVendorCode(storeUpdateRequest.getVendorCode());
+        StoreType type = StoreType.getValue(typeStr);
+        store.changeInfo(name, type, vendorCode);
     }
 
     @Transactional
-    public StoreInfoResponse findByName(String name) throws Exception {
+    public StoreInfoResponse findByName(String name) throws NotDefinitionException {
         Store store = storeRepository.findByName(name)
-                .orElseThrow(() -> new Exception("store not found"));
+                .orElseThrow(() -> new NotDefinitionException(ErrorMessage.NOT_EXIST_STORE_EXCEPTION));
 
         return storeConverter.toStoreInfoResponse(store);
     }
 
     @Transactional
-    public void delete(Long id) throws Exception {
+    public void delete(Long id) throws NotDefinitionException {
         Store store = storeRepository.findById(id)
-                .orElseThrow(() -> new Exception("store not found"));
+                .orElseThrow(() -> new NotDefinitionException(ErrorMessage.NOT_EXIST_STORE_EXCEPTION));
 
         storeRepository.delete(store);
     }
