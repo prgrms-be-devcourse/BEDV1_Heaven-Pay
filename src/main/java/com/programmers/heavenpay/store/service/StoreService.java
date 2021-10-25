@@ -2,6 +2,7 @@ package com.programmers.heavenpay.store.service;
 
 import com.programmers.heavenpay.store.converter.StoreConverter;
 import com.programmers.heavenpay.store.dto.StoreCreateRequest;
+import com.programmers.heavenpay.store.dto.StoreUpdateRequest;
 import com.programmers.heavenpay.store.entity.Store;
 import com.programmers.heavenpay.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,15 @@ public class StoreService {
         storeRepository.save(store);
 
         return store.getId();
+    }
+
+    @Transactional
+    public void update(StoreUpdateRequest storeUpdateRequest) throws Exception {
+        Store store = storeRepository.findById(storeUpdateRequest.getId())
+                .orElseThrow(() -> new Exception("store not found"));
+
+        store.changeName(storeUpdateRequest.getName());
+        store.changeType(storeUpdateRequest.getType());
+        store.changeVendorCode(storeUpdateRequest.getVendorCode());
     }
 }
