@@ -15,7 +15,7 @@ public class StoreService {
     private final StoreConverter storeConverter;
 
     @Transactional(readOnly = true)
-    public Long createstore(StoreCreateRequest storeCreateRequest) {
+    public Long create(StoreCreateRequest storeCreateRequest) {
         Store store = storeConverter.toStoreEntity(storeCreateRequest);
         storeRepository.save(store);
 
