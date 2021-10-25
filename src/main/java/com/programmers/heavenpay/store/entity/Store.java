@@ -24,7 +24,7 @@ public class Store extends BaseEntity<Long> {
     @Enumerated(EnumType.STRING)
     private StoreType type;
 
-    @Column(name = "store_vendor_code", nullable = false)
+    @Column(name = "store_vendor_code", nullable = false, unique = true)
     private String vendorCode;
 
     public void changeInfo(String name, StoreType type, String vendorCode) {
