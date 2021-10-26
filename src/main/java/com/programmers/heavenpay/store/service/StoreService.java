@@ -10,6 +10,8 @@ import com.programmers.heavenpay.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +44,12 @@ public class StoreService {
                 .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_STORE));
 
         return storeConverter.toStoreInfoResponse(store);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<StoreInfoResponse> findAllByPages(Pageable pageable) {
+        return storeRepository.findAll(pageable)
+                .map(storeConverter::toStoreInfoResponse);
     }
 
     @Transactional
