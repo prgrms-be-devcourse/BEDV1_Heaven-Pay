@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MemberConverter {
-    public Member toMemberCreateEntity(String email, String name, String phoneNumber, String birth, String gender) {
+    public Member toMemberEntity(String email, String name, String phoneNumber, String birth, String gender) {
         return Member.builder()
                 .email(email)
                 .name(name)

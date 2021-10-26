@@ -20,7 +20,7 @@ public class MemberService {
 
     @Transactional
     public Long create(String email, String name, String phoneNumber, String birth, String gender) {
-        Member member = converter.toMemberCreateEntity(email, name, phoneNumber, birth, gender);
+        Member member = converter.toMemberEntity(email, name, phoneNumber, birth, gender);
         Member result = memberRepository.save(member);
 
         return result.getId();
