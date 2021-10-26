@@ -18,7 +18,7 @@ public class MemberConverter {
                 .build();
     }
 
-    public MemberFindResponse toMemberFindDto(Member member) {
+    public MemberFindResponse toMemberFindDResponse(Member member) {
         return MemberFindResponse.builder()
                 .id(member.getId())
                 .email(member.getEmail())

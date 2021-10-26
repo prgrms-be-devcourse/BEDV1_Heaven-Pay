@@ -29,7 +29,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public MemberFindResponse findById(Long id) {
         return memberRepository.findById(id)
-                .map(converter::toMemberFindDto)
+                .map(converter::toMemberFindDResponse)
                 .orElseThrow(
                         () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID)
                 );
@@ -38,7 +38,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public Page<MemberFindResponse> findAllByPages(Pageable pageable){
         return memberRepository.findAll(pageable)
-                .map(converter::toMemberFindDto);
+                .map(converter::toMemberFindDResponse);
     }
 
     @Transactional
