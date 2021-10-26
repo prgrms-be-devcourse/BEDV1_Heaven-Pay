@@ -6,16 +6,25 @@ import com.programmers.heavenpay.error.exception.NotExistsException;
 import java.util.Arrays;
 
 public enum StoreType {
-    FOOD,
-    DEPARTMENT_STORE,
-    LIVING,
-    BAKERY,
-    ELECTRONIC,
-    COSMETICS;
+    FOOD("식품"),
+    DEPARTMENT_STORE("백화점"),
+    LIVING("리빙"),
+    GIFT_CARD("상품권"),
+    BAKERY("베이커리"),
+    ELECTRONIC("전자제품"),
+    CLOTHES("의류"),
+    COSMETICS("화장품"),
+    SPORT("스포츠");
 
-    public static StoreType getValue(String typeStr) {
+    private final String typeStr;
+
+    StoreType(String typeStr) {
+        this.typeStr = typeStr;
+    }
+
+    public static StoreType of(String typeStr) {
         return Arrays.stream(StoreType.values())
-                .filter(v -> v.toString().equals(typeStr))
+                .filter(v -> v.typeStr.equals(typeStr))
                 .findFirst()
                 .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_STORE_TYPE));
     }

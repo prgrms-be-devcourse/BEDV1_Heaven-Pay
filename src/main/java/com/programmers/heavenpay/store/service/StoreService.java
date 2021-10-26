@@ -1,7 +1,6 @@
 package com.programmers.heavenpay.store.service;
 
 import com.programmers.heavenpay.error.ErrorMessage;
-import com.programmers.heavenpay.error.exception.NotDefinitionException;
 import com.programmers.heavenpay.error.exception.NotExistsException;
 import com.programmers.heavenpay.store.converter.StoreConverter;
 import com.programmers.heavenpay.store.dto.response.StoreInfoResponse;
@@ -20,7 +19,7 @@ public class StoreService {
 
     @Transactional
     public Long create(String name, String typeStr, String vendorCode) {
-        StoreType type = StoreType.getValue(typeStr);
+        StoreType type = StoreType.of(typeStr);
 
         Store store = storeConverter.toStoreEntity(name, type, vendorCode);
         Store savedStore = storeRepository.save(store);
@@ -33,7 +32,7 @@ public class StoreService {
         Store store = storeRepository.findById(id)
                 .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_STORE));
 
-        StoreType type = StoreType.getValue(typeStr);
+        StoreType type = StoreType.of(typeStr);
         store.changeInfo(name, type, vendorCode);
     }
 
