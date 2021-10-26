@@ -46,7 +46,7 @@ public class StoreService {
     }
 
     @Transactional
-    public void delete(Long id) throws NotDefinitionException {
+    public void delete(Long id) {
         Store store = storeRepository.findById(id)
                 .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_STORE));
 
