@@ -23,7 +23,4 @@ public class MemberCreateRequest {
 
     @NotBlank(message = "gender should not be blank")
     private String gender;
-
-    @NotBlank(message = "terms should not be blank")
-    private Boolean terms;
 }
