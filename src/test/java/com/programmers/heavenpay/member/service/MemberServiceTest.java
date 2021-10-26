@@ -39,7 +39,7 @@ class MemberServiceTest {
     void create() {
         long beforeCount = memberRepository.count();
 
-        memberService.create("ddkk94@naver.com", "Taid", "01011223344", "20211015", "Male");
+        memberService.create("ddkk94@naver.com", "Taid", "01011223344", "20211015", "남성");
 
         assertThat(beforeCount + 1, is(memberRepository.count()));
     }
@@ -66,7 +66,7 @@ class MemberServiceTest {
     @Test
     @Order(4)
     void update() {
-        memberService.update(useId, "jhum94@naver.com", "Taid22", "01011223344", "20211015", "Male");
+        memberService.update(useId, "jhum94@naver.com", "Taid22", "01011223344", "20211015", "남성");
         try {
             MemberFindResponse result = memberService.findById(useId);
             assertThat(result.getEmail(), is("jhum94@naver.com"));

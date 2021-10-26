@@ -1,6 +1,7 @@
 package com.programmers.heavenpay.member.dto.response;
 
 import com.programmers.heavenpay.annotation.ArbitraryAuthenticationPrincipal;
+import com.programmers.heavenpay.member.entity.vo.GenderType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -26,5 +27,5 @@ public class MemberFindResponse {
     private final String birth;
 
     @NotBlank(message = "gender should not be blank")
-    private final String gender;
+    private final GenderType gender;
 }

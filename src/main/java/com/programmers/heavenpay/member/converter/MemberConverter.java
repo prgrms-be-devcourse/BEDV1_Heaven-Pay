@@ -1,9 +1,8 @@
 package com.programmers.heavenpay.member.converter;
 
-import com.programmers.heavenpay.member.dto.request.MemberCreateRequest;
-import com.programmers.heavenpay.member.dto.request.MemberUpdateRequest;
 import com.programmers.heavenpay.member.dto.response.MemberFindResponse;
 import com.programmers.heavenpay.member.entity.Member;
+import com.programmers.heavenpay.member.entity.vo.GenderType;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,7 +13,7 @@ public class MemberConverter {
                 .name(name)
                 .phoneNumber(phoneNumber)
                 .birth(birth)
-                .gender(gender)
+                .gender(GenderType.of(gender))
                 .build();
     }
 
