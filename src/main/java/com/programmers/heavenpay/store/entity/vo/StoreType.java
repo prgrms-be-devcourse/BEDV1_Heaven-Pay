@@ -18,13 +18,13 @@ public enum StoreType {
 
     private final String typeStr;
 
-    StoreType(String typeStr) {
-        this.typeStr = typeStr;
+    StoreType(String storeType) {
+        this.typeStr = storeType;
     }
 
-    public static StoreType of(String typeStr) {
+    public static StoreType of(String storeType) {
         return Arrays.stream(StoreType.values())
-                .filter(v -> v.typeStr.equals(typeStr))
+                .filter(v -> v.typeStr.equals(storeType))
                 .findFirst()
                 .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_STORE_TYPE));
     }
