@@ -12,15 +12,12 @@ public class MemberCreateRequest {
     @Email
     private String email;
 
-    @NotBlank(message = "name should not be blank")
     @Pattern(regexp="^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+$", message="Invalid name address!")
     private String name;
 
-    @NotBlank(message = "phoneNumber should not be blank")
     @Pattern(regexp="[0-9]{3}[0-9]{3,4}[0-9]{4}", message="Invalid phoneNumber address!")
     private String phoneNumber;
 
-    @NotBlank(message = "birth should not be blank")
     @Pattern(regexp="[0-9]{8}", message="Invalid birth address!")
     private String birth;
 

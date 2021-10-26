@@ -20,17 +20,19 @@ public class MemberService {
 
     @Transactional
     public Long create(String email, String name, String phoneNumber, String birth, String gender) {
-        Member member = converter.toMemberCreateDto(email, name, phoneNumber, birth, gender);
+        Member member = converter.toMemberCreateEntity(email, name, phoneNumber, birth, gender);
         Member result = memberRepository.save(member);
 
         return result.getId();
     }
 
     @Transactional(readOnly = true)
-    public MemberFindResponse findById(Long id) throws NotExistsException {
+    public MemberFindResponse findById(Long id) {
         return memberRepository.findById(id)
                 .map(converter::toMemberFindDto)
-                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID));
+                .orElseThrow(
+                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID)
+                );
     }
 
     @Transactional(readOnly = true)
@@ -40,7 +42,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void update(Long id, String email, String name, String phoneNumber, String birth, String gender) throws NotExistsException {
+    public void update(Long id, String email, String name, String phoneNumber, String birth, String gender) {
         Member originMember = memberRepository.findById(id)
                 .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID));
 
@@ -48,9 +50,11 @@ public class MemberService {
     }
 
     @Transactional
-    public void delete(Long id) throws NotExistsException {
+    public void delete(Long id) {
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID));
+                .orElseThrow(
+                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID)
+                );
 
         memberRepository.delete(member);
     }

@@ -32,10 +32,10 @@ public class Member extends BaseEntity<Long> {
     private String gender;
 
     public void changeValues(String email, String name, String phoneNumber, String birth, String gender) {
-        this.email = email;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.birth = birth;
-        this.gender = gender;
+        this.email = email.isBlank() ? this.email : email;
+        this.name = name.isBlank() ? this.name : name;
+        this.phoneNumber = phoneNumber.isBlank() ? this.phoneNumber : phoneNumber;
+        this.birth = birth.isBlank() ? this.birth : birth;
+        this.gender = gender.isBlank() ? this.gender : gender;
     }
 }
