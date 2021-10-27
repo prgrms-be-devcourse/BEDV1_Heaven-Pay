@@ -1,5 +1,6 @@
 package com.programmers.heavenpay.member.converter;
 
+import com.programmers.heavenpay.member.dto.response.MemberCreateResponse;
 import com.programmers.heavenpay.member.dto.response.MemberFindResponse;
 import com.programmers.heavenpay.member.entity.Member;
 import com.programmers.heavenpay.member.entity.vo.GenderType;
@@ -25,6 +26,12 @@ public class MemberConverter {
                 .phoneNumber(member.getPhoneNumber())
                 .birth(member.getBirth())
                 .gender(member.getGender())
+                .build();
+    }
+
+    public MemberCreateResponse toMemberCreateResponse(Long id) {
+        return MemberCreateResponse.builder()
+                .id(id)
                 .build();
     }
 }

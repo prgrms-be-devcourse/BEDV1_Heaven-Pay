@@ -3,6 +3,7 @@ package com.programmers.heavenpay.member.service;
 import com.programmers.heavenpay.error.ErrorMessage;
 import com.programmers.heavenpay.error.exception.NotExistsException;
 import com.programmers.heavenpay.member.converter.MemberConverter;
+import com.programmers.heavenpay.member.dto.response.MemberCreateResponse;
 import com.programmers.heavenpay.member.dto.response.MemberFindResponse;
 import com.programmers.heavenpay.member.entity.Member;
 import com.programmers.heavenpay.member.repository.MemberRepository;
@@ -19,11 +20,11 @@ public class MemberService {
     private final MemberConverter converter;
 
     @Transactional
-    public Long create(String email, String name, String phoneNumber, String birth, String gender) {
+    public MemberCreateResponse create(String email, String name, String phoneNumber, String birth, String gender) {
         Member member = converter.toMemberEntity(email, name, phoneNumber, birth, gender);
         Member result = memberRepository.save(member);
 
-        return result.getId();
+        return converter.toMemberCreateResponse(result.getId());
     }
 
     @Transactional(readOnly = true)
