@@ -4,7 +4,9 @@ import com.programmers.heavenpay.error.ErrorMessage;
 import com.programmers.heavenpay.error.exception.NotExistsException;
 import com.programmers.heavenpay.member.converter.MemberConverter;
 import com.programmers.heavenpay.member.dto.response.MemberCreateResponse;
+import com.programmers.heavenpay.member.dto.response.MemberDeleteResponse;
 import com.programmers.heavenpay.member.dto.response.MemberFindResponse;
+import com.programmers.heavenpay.member.dto.response.MemberUpdateResponse;
 import com.programmers.heavenpay.member.entity.Member;
 import com.programmers.heavenpay.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,11 +45,12 @@ public class MemberService {
     }
 
     @Transactional
-    public void update(Long id, String email, String name, String phoneNumber, String birth, String gender) {
+    public MemberUpdateResponse update(Long id, String email, String name, String phoneNumber, String birth, String gender) {
         Member originMember = memberRepository.findById(id)
                 .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID));
 
         originMember.changeValues(email, name, phoneNumber, birth, gender);
+        return converter.toMemberUpdateResponse(originMember);
     }
 
     @Transactional

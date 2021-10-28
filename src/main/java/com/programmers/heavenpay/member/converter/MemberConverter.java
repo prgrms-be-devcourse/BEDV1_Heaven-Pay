@@ -2,6 +2,7 @@ package com.programmers.heavenpay.member.converter;
 
 import com.programmers.heavenpay.member.dto.response.MemberCreateResponse;
 import com.programmers.heavenpay.member.dto.response.MemberFindResponse;
+import com.programmers.heavenpay.member.dto.response.MemberUpdateResponse;
 import com.programmers.heavenpay.member.entity.Member;
 import com.programmers.heavenpay.member.entity.vo.GenderType;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,17 @@ public class MemberConverter {
     public MemberCreateResponse toMemberCreateResponse(Long id) {
         return MemberCreateResponse.builder()
                 .id(id)
+                .build();
+    }
+
+    public MemberUpdateResponse toMemberUpdateResponse(Member member) {
+        return MemberUpdateResponse.builder()
+                .id(member.getId())
+                .email(member.getEmail())
+                .name(member.getName())
+                .phoneNumber(member.getPhoneNumber())
+                .birth(member.getBirth())
+                .gender(member.getGender())
                 .build();
     }
 }

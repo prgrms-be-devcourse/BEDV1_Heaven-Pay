@@ -1,8 +1,12 @@
 package com.programmers.heavenpay.member.controller;
 
+import lombok.Getter;
+
+@Getter
 public enum MethodType {
-    GET("get"),
-    GET_ALL("get-all"),
+    READ("get"),
+    READ_ALL("get-all"),
+    CREATE("create"),
     POST("post"),
     UPDATE("update"),
     DELETE("delete");

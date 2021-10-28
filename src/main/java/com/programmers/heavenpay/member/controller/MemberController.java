@@ -4,7 +4,9 @@ import com.programmers.heavenpay.common.converter.ResponseConverter;
 import com.programmers.heavenpay.common.dto.ResponseDto;
 import com.programmers.heavenpay.common.dto.ResponseMessage;
 import com.programmers.heavenpay.member.dto.request.MemberCreateRequest;
+import com.programmers.heavenpay.member.dto.request.MemberUpdateRequest;
 import com.programmers.heavenpay.member.dto.response.MemberCreateResponse;
+import com.programmers.heavenpay.member.dto.response.MemberUpdateResponse;
 import com.programmers.heavenpay.member.service.MemberService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.HttpMethod;
@@ -14,10 +16,7 @@ import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -48,16 +47,46 @@ public class MemberController {
         EntityModel<MemberCreateResponse> entityModel = EntityModel.of(
                 response,
                 getLinkToAddress().withSelfRel().withTitle(HttpMethod.POST.name()),
-                getLinkToAddress().slash(response.getId()).withRel(MethodType.GET.name()).withType(HttpMethod.GET.name()),
-                getLinkToAddress().withRel(MethodType.GET_ALL.name()).withType(HttpMethod.GET.name()),
-                getLinkToAddress().slash(response.getId()).withRel(MethodType.UPDATE.name()).withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(response.getId()).withRel(MethodType.DELETE.name()).withType(HttpMethod.DELETE.name())
+                getLinkToAddress().slash(response.getId()).withRel(MethodType.READ.getTypeStr()).withType(HttpMethod.GET.name()),
+                getLinkToAddress().withRel(MethodType.READ_ALL.getTypeStr()).withType(HttpMethod.GET.name()),
+                getLinkToAddress().slash(response.getId()).withRel(MethodType.UPDATE.getTypeStr()).withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(response.getId()).withRel(MethodType.DELETE.getTypeStr()).withType(HttpMethod.DELETE.name())
         );
 
         return responseConverter.toResponseEntity(
-                HttpStatus.CREATED,
+                HttpStatus.OK,
                 ResponseMessage.MEMBER_INSERT_SUCCESS,
                 entityModel
         );
     }
+
+    @ApiOperation("회원(Member) 단건 수정, 성공시 수정된 Member 정보 반환")
+    @PatchMapping(value = "/{memberId}", consumes = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<ResponseDto> editInfo(@PathVariable Long memberId, @Valid @RequestBody MemberUpdateRequest request) {
+        MemberUpdateResponse response = memberService.update(
+                memberId,
+                request.getEmail(),
+                request.getName(),
+                request.getPhoneNumber(),
+                request.getBirth(),
+                request.getGender()
+        );
+
+        EntityModel<MemberUpdateResponse> entityModel = EntityModel.of(
+                response,
+                getLinkToAddress().withRel(MethodType.CREATE.getTypeStr()).withType(HttpMethod.POST.name()),
+                getLinkToAddress().slash(response.getId()).withRel(MethodType.READ.getTypeStr()).withType(HttpMethod.GET.name()),
+                getLinkToAddress().withRel(MethodType.READ_ALL.getTypeStr()).withType(HttpMethod.GET.name()),
+                getLinkToAddress().slash(response.getId()).withSelfRel().withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(response.getId()).withRel(MethodType.DELETE.getTypeStr()).withType(HttpMethod.DELETE.name())
+        );
+
+        return responseConverter.toResponseEntity(
+                HttpStatus.OK,
+                ResponseMessage.MEMBER_UPDATE_SUCCESS,
+                entityModel
+        );
+    }
+
+
 }
