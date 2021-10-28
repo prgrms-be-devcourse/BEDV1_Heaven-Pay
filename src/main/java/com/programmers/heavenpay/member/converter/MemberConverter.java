@@ -1,6 +1,7 @@
 package com.programmers.heavenpay.member.converter;
 
 import com.programmers.heavenpay.member.dto.response.MemberCreateResponse;
+import com.programmers.heavenpay.member.dto.response.MemberDeleteResponse;
 import com.programmers.heavenpay.member.dto.response.MemberFindResponse;
 import com.programmers.heavenpay.member.dto.response.MemberUpdateResponse;
 import com.programmers.heavenpay.member.entity.Member;
@@ -38,6 +39,17 @@ public class MemberConverter {
 
     public MemberUpdateResponse toMemberUpdateResponse(Member member) {
         return MemberUpdateResponse.builder()
+                .id(member.getId())
+                .email(member.getEmail())
+                .name(member.getName())
+                .phoneNumber(member.getPhoneNumber())
+                .birth(member.getBirth())
+                .gender(member.getGender())
+                .build();
+    }
+
+    public MemberDeleteResponse toMemberDeleteResponse(Member member) {
+        return MemberDeleteResponse.builder()
                 .id(member.getId())
                 .email(member.getEmail())
                 .name(member.getName())

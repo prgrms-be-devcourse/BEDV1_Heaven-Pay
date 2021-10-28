@@ -54,12 +54,14 @@ public class MemberService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public MemberDeleteResponse delete(Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(
                         () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID)
                 );
 
+        MemberDeleteResponse result = converter.toMemberDeleteResponse(member);
         memberRepository.delete(member);
+        return result;
     }
 }

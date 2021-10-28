@@ -6,6 +6,7 @@ import com.programmers.heavenpay.common.dto.ResponseMessage;
 import com.programmers.heavenpay.member.dto.request.MemberCreateRequest;
 import com.programmers.heavenpay.member.dto.request.MemberUpdateRequest;
 import com.programmers.heavenpay.member.dto.response.MemberCreateResponse;
+import com.programmers.heavenpay.member.dto.response.MemberDeleteResponse;
 import com.programmers.heavenpay.member.dto.response.MemberUpdateResponse;
 import com.programmers.heavenpay.member.service.MemberService;
 import io.swagger.annotations.ApiOperation;
@@ -88,5 +89,22 @@ public class MemberController {
         );
     }
 
+    @ApiOperation("회원(Member) 단건 삭제, 성공시 삭제된 Member ID 반환")
+    @DeleteMapping(value = "/{memberId}")
+    public ResponseEntity<ResponseDto> delete(@Valid @PathVariable Long memberId) {
+        MemberDeleteResponse response = memberService.delete(memberId);
 
+        EntityModel<MemberDeleteResponse> entityModel = EntityModel.of(
+                response,
+                getLinkToAddress().withRel(MethodType.CREATE.getTypeStr()).withType(HttpMethod.POST.name()),
+                getLinkToAddress().withRel(MethodType.READ_ALL.getTypeStr()).withType(HttpMethod.GET.name()),
+                getLinkToAddress().slash(response.getId()).withSelfRel().withType(HttpMethod.DELETE.name())
+        );
+
+        return responseConverter.toResponseEntity(
+                HttpStatus.OK,
+                ResponseMessage.MEMBER_DELETE_SUCCESS,
+                entityModel
+        );
+    }
 }

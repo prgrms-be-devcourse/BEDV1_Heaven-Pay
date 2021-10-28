@@ -7,9 +7,7 @@ import com.programmers.heavenpay.member.dto.response.MemberCreateResponse;
 import com.programmers.heavenpay.member.entity.vo.GenderType;
 import com.programmers.heavenpay.member.repository.MemberRepository;
 import com.programmers.heavenpay.member.service.MemberService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,8 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,9 +42,14 @@ class MemberControllerTest {
     @Autowired
     MemberController memberController;
 
-    @BeforeAll
+    @BeforeEach
     void setup() {
         objectMapper = new ObjectMapper();
+        memberRepository.deleteAll();
+    }
+
+    @AfterEach
+    void exit() {
         memberRepository.deleteAll();
     }
 
@@ -96,5 +98,22 @@ class MemberControllerTest {
         mockMvc.perform(requestBuilder)
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void deleteTest() throws Exception {
+        // Given
+        MemberCreateResponse response = memberService.create("ddkk94@naver.com", "Taid1111", "00011112222", "19991122", GenderType.MALE.getTypeStr());
+
+        // When
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = delete("/api/v1/members/{memberId}", response.getId());
+        mockHttpServletRequestBuilder.contentType(MediaTypes.HAL_JSON_VALUE);
+        mockHttpServletRequestBuilder.accept(MediaTypes.HAL_JSON_VALUE);
+
+
+        // Then
+        mockMvc.perform(mockHttpServletRequestBuilder)
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 }
