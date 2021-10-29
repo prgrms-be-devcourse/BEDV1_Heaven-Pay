@@ -1,6 +1,7 @@
 package com.programmers.heavenpay.member.controller;
 
 import com.programmers.heavenpay.common.converter.ResponseConverter;
+import com.programmers.heavenpay.common.dto.LinkType;
 import com.programmers.heavenpay.common.dto.ResponseDto;
 import com.programmers.heavenpay.common.dto.ResponseMessage;
 import com.programmers.heavenpay.member.dto.request.MemberCreateRequest;
@@ -52,14 +53,13 @@ public class MemberController {
         EntityModel<MemberCreateResponse> entityModel = EntityModel.of(
                 response,
                 getLinkToAddress().withSelfRel().withTitle(HttpMethod.POST.name()),
-                getLinkToAddress().slash(response.getId()).withRel(MethodType.READ.getTypeStr()).withType(HttpMethod.GET.name()),
-                getLinkToAddress().withRel(MethodType.READ_ALL.getTypeStr()).withType(HttpMethod.GET.name()),
-                getLinkToAddress().slash(response.getId()).withRel(MethodType.UPDATE.getTypeStr()).withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(response.getId()).withRel(MethodType.DELETE.getTypeStr()).withType(HttpMethod.DELETE.name())
+                getLinkToAddress().slash(response.getId()).withRel(LinkType.READ_METHOD).withType(HttpMethod.GET.name()),
+                getLinkToAddress().withRel(LinkType.READ_ALL_METHOD).withType(HttpMethod.GET.name()),
+                getLinkToAddress().slash(response.getId()).withRel(LinkType.UPDATE_METHOD).withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(response.getId()).withRel(LinkType.DELETE_METHOD).withType(HttpMethod.DELETE.name())
         );
 
         return responseConverter.toResponseEntity(
-                HttpStatus.OK,
                 ResponseMessage.MEMBER_INSERT_SUCCESS,
                 entityModel
         );
@@ -79,15 +79,14 @@ public class MemberController {
 
         EntityModel<MemberUpdateResponse> entityModel = EntityModel.of(
                 response,
-                getLinkToAddress().withRel(MethodType.CREATE.getTypeStr()).withType(HttpMethod.POST.name()),
-                getLinkToAddress().slash(response.getId()).withRel(MethodType.READ.getTypeStr()).withType(HttpMethod.GET.name()),
-                getLinkToAddress().withRel(MethodType.READ_ALL.getTypeStr()).withType(HttpMethod.GET.name()),
+                getLinkToAddress().withRel(LinkType.CREATE_METHOD).withType(HttpMethod.POST.name()),
+                getLinkToAddress().slash(response.getId()).withRel(LinkType.READ_METHOD).withType(HttpMethod.GET.name()),
+                getLinkToAddress().withRel(LinkType.READ_ALL_METHOD).withType(HttpMethod.GET.name()),
                 getLinkToAddress().slash(response.getId()).withSelfRel().withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(response.getId()).withRel(MethodType.DELETE.getTypeStr()).withType(HttpMethod.DELETE.name())
+                getLinkToAddress().slash(response.getId()).withRel(LinkType.DELETE_METHOD).withType(HttpMethod.DELETE.name())
         );
 
         return responseConverter.toResponseEntity(
-                HttpStatus.OK,
                 ResponseMessage.MEMBER_UPDATE_SUCCESS,
                 entityModel
         );
@@ -100,13 +99,12 @@ public class MemberController {
 
         EntityModel<MemberDeleteResponse> entityModel = EntityModel.of(
                 response,
-                getLinkToAddress().withRel(MethodType.CREATE.getTypeStr()).withType(HttpMethod.POST.name()),
-                getLinkToAddress().withRel(MethodType.READ_ALL.getTypeStr()).withType(HttpMethod.GET.name()),
+                getLinkToAddress().withRel(LinkType.CREATE_METHOD).withType(HttpMethod.POST.name()),
+                getLinkToAddress().withRel(LinkType.READ_ALL_METHOD).withType(HttpMethod.GET.name()),
                 getLinkToAddress().slash(response.getId()).withSelfRel().withType(HttpMethod.DELETE.name())
         );
 
         return responseConverter.toResponseEntity(
-                HttpStatus.OK,
                 ResponseMessage.MEMBER_DELETE_SUCCESS,
                 entityModel
         );
@@ -119,15 +117,14 @@ public class MemberController {
 
         EntityModel<MemberFindResponse> entityModel = EntityModel.of(
                 response,
-                getLinkToAddress().withRel(MethodType.CREATE.getTypeStr()).withType(HttpMethod.POST.name()),
+                getLinkToAddress().withRel(LinkType.CREATE_METHOD).withType(HttpMethod.POST.name()),
                 getLinkToAddress().slash(response.getId()).withSelfRel().withType(HttpMethod.GET.name()),
-                getLinkToAddress().withRel(MethodType.READ_ALL.getTypeStr()).withType(HttpMethod.GET.name()),
-                getLinkToAddress().slash(response.getId()).withRel(MethodType.UPDATE.getTypeStr()).withType(HttpMethod.PATCH.name()),
-                getLinkToAddress().slash(response.getId()).withRel(MethodType.DELETE.getTypeStr()).withType(HttpMethod.DELETE.name())
+                getLinkToAddress().withRel(LinkType.READ_ALL_METHOD).withType(HttpMethod.GET.name()),
+                getLinkToAddress().slash(response.getId()).withRel(LinkType.UPDATE_METHOD).withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(response.getId()).withRel(LinkType.DELETE_METHOD).withType(HttpMethod.DELETE.name())
         );
 
         return responseConverter.toResponseEntity(
-                HttpStatus.OK,
                 ResponseMessage.MEMBER_FIND_SUCCESS,
                 entityModel
         );
