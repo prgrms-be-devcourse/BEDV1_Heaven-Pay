@@ -20,7 +20,7 @@ public class MemberConverter {
                 .build();
     }
 
-    public MemberFindResponse toMemberFindDResponse(Member member) {
+    public MemberFindResponse toMemberFindResponse(Member member) {
         return MemberFindResponse.builder()
                 .id(member.getId())
                 .email(member.getEmail())
@@ -31,9 +31,9 @@ public class MemberConverter {
                 .build();
     }
 
-    public MemberCreateResponse toMemberCreateResponse(Long id) {
+    public MemberCreateResponse toMemberCreateResponse(Member member) {
         return MemberCreateResponse.builder()
-                .id(id)
+                .id(member.getId())
                 .build();
     }
 

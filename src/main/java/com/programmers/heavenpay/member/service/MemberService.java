@@ -24,15 +24,15 @@ public class MemberService {
     @Transactional
     public MemberCreateResponse create(String email, String name, String phoneNumber, String birth, String gender) {
         Member member = converter.toMemberEntity(email, name, phoneNumber, birth, gender);
-        Member result = memberRepository.save(member);
+        Member resultMember = memberRepository.save(member);
 
-        return converter.toMemberCreateResponse(result.getId());
+        return converter.toMemberCreateResponse(resultMember);
     }
 
     @Transactional(readOnly = true)
     public MemberFindResponse findById(Long id) {
         return memberRepository.findById(id)
-                .map(converter::toMemberFindDResponse)
+                .map(converter::toMemberFindResponse)
                 .orElseThrow(
                         () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID)
                 );
@@ -41,7 +41,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public Page<MemberFindResponse> findAllByPages(Pageable pageable){
         return memberRepository.findAll(pageable)
-                .map(converter::toMemberFindDResponse);
+                .map(converter::toMemberFindResponse);
     }
 
     @Transactional
