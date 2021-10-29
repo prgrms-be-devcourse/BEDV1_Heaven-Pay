@@ -7,12 +7,16 @@ import com.programmers.heavenpay.member.dto.request.MemberCreateRequest;
 import com.programmers.heavenpay.member.dto.request.MemberUpdateRequest;
 import com.programmers.heavenpay.member.dto.response.MemberCreateResponse;
 import com.programmers.heavenpay.member.dto.response.MemberDeleteResponse;
+import com.programmers.heavenpay.member.dto.response.MemberFindResponse;
 import com.programmers.heavenpay.member.dto.response.MemberUpdateResponse;
 import com.programmers.heavenpay.member.service.MemberService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.HttpMethod;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -105,6 +109,42 @@ public class MemberController {
                 HttpStatus.OK,
                 ResponseMessage.MEMBER_DELETE_SUCCESS,
                 entityModel
+        );
+    }
+
+    @ApiOperation("회원(Member) 단건 조회, 성공시 Member 정보 반환")
+    @GetMapping(value = "/{memberId}")
+    public ResponseEntity<ResponseDto> getOne(@PathVariable Long memberId) {
+        MemberFindResponse response = memberService.findById(memberId);
+
+        EntityModel<MemberFindResponse> entityModel = EntityModel.of(
+                response,
+                getLinkToAddress().withRel(MethodType.CREATE.getTypeStr()).withType(HttpMethod.POST.name()),
+                getLinkToAddress().slash(response.getId()).withSelfRel().withType(HttpMethod.GET.name()),
+                getLinkToAddress().withRel(MethodType.READ_ALL.getTypeStr()).withType(HttpMethod.GET.name()),
+                getLinkToAddress().slash(response.getId()).withRel(MethodType.UPDATE.getTypeStr()).withType(HttpMethod.PATCH.name()),
+                getLinkToAddress().slash(response.getId()).withRel(MethodType.DELETE.getTypeStr()).withType(HttpMethod.DELETE.name())
+        );
+
+        return responseConverter.toResponseEntity(
+                HttpStatus.OK,
+                ResponseMessage.MEMBER_FIND_SUCCESS,
+                entityModel
+        );
+    }
+
+    @ApiOperation("모든 회원(Member) 조회, 성공시 Member Page 반환")
+    @GetMapping()
+    public ResponseEntity<ResponseDto> getAll(Pageable pageable) {
+        Page<MemberFindResponse> responses = memberService.findAllByPages(pageable);
+
+        Link link = getLinkToAddress().withSelfRel().withType(HttpMethod.GET.name());
+
+        return responseConverter.toResponseEntity(
+                HttpStatus.OK,
+                ResponseMessage.MEMBER_FIND_SUCCESS,
+                responses,
+                link
         );
     }
 }

@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class MemberControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -50,10 +51,11 @@ class MemberControllerTest {
 
     @AfterEach
     void exit() {
-        memberRepository.deleteAll();
+
     }
 
     @Test
+    @Order(1)
     void signUpTest() throws Exception {
         // Given
         MemberCreateRequest request = MemberCreateRequest.builder()
@@ -77,18 +79,19 @@ class MemberControllerTest {
     }
 
     @Test
-    void editInfo() throws Exception {
+    @Order(2)
+    void editInfoTest() throws Exception {
         // Given
-        MemberCreateResponse response = memberService.create("ddkk94@naver.com", "Taid1111", "00011112222", "19991122", GenderType.MALE.getTypeStr());
+        MemberCreateResponse response = memberService.create("ddkk94@naver.com", "Taid", "00011112222", "19991122", GenderType.MALE.getTypeStr());
+
+        // When
         MemberUpdateRequest request = MemberUpdateRequest.builder()
                 .email("test@naver.com")
-                .name("Taid2222")
+                .name("Taid")
                 .phoneNumber("00011112222")
                 .birth("19991122")
                 .gender(GenderType.MALE.getTypeStr())
                 .build();
-
-        // When
         MockHttpServletRequestBuilder requestBuilder = patch("/api/v1/members/{memberId}", response.getId());
         requestBuilder.content(objectMapper.writeValueAsString(request));
         requestBuilder.contentType(MediaTypes.HAL_JSON_VALUE);
@@ -101,9 +104,10 @@ class MemberControllerTest {
     }
 
     @Test
+    @Order(3)
     void deleteTest() throws Exception {
         // Given
-        MemberCreateResponse response = memberService.create("ddkk94@naver.com", "Taid1111", "00011112222", "19991122", GenderType.MALE.getTypeStr());
+        MemberCreateResponse response = memberService.create("ddkk94@naver.com", "Taid", "00011112222", "19991122", GenderType.MALE.getTypeStr());
 
         // When
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = delete("/api/v1/members/{memberId}", response.getId());
@@ -115,5 +119,43 @@ class MemberControllerTest {
         mockMvc.perform(mockHttpServletRequestBuilder)
                 .andExpect(status().isOk())
                 .andDo(print());
+    }
+
+    @Test
+    @Order(4)
+    void getOneTest() throws Exception {
+        // Given
+        MemberCreateResponse response = memberService.create("ddkk94@naver.com", "Taid", "00011112222", "19991122", GenderType.MALE.getTypeStr());
+
+        // When
+        MockHttpServletRequestBuilder requestBuilder = get("/api/v1/members/{memberId}", response.getId());
+        requestBuilder.contentType(MediaTypes.HAL_JSON_VALUE);
+        requestBuilder.accept(MediaTypes.HAL_JSON_VALUE);
+
+        // Then
+        mockMvc.perform(requestBuilder)
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @Order(5)
+    void getAllTest() throws Exception {
+        // Given
+        MemberCreateResponse response1 = memberService.create("test1@naver.com", "AAA", "00011112222", "19991122", GenderType.MALE.getTypeStr());
+        MemberCreateResponse response2 = memberService.create("test2@naver.com", "BBB", "00033334444", "19991023", GenderType.FEMALE.getTypeStr());
+        MemberCreateResponse response3 = memberService.create("test3@naver.com", "CCC", "00055556666", "19990924", GenderType.MALE.getTypeStr());
+
+        // When
+        MockHttpServletRequestBuilder requestBuilder = get("/api/v1/members");
+        requestBuilder.contentType(MediaTypes.HAL_JSON_VALUE);
+        requestBuilder.accept(MediaTypes.HAL_JSON_VALUE);
+        requestBuilder.param("page", String.valueOf(0));
+        requestBuilder.param("size", String.valueOf(10));
+
+        // Then
+        mockMvc.perform(requestBuilder)
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }
