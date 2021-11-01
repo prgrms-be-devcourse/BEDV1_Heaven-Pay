@@ -8,7 +8,7 @@ import com.programmers.heavenpay.member.dto.request.MemberCreateRequest;
 import com.programmers.heavenpay.member.dto.request.MemberUpdateRequest;
 import com.programmers.heavenpay.member.dto.response.MemberCreateResponse;
 import com.programmers.heavenpay.member.dto.response.MemberDeleteResponse;
-import com.programmers.heavenpay.member.dto.response.MemberFindResponse;
+import com.programmers.heavenpay.member.dto.response.MemberGetOneResponse;
 import com.programmers.heavenpay.member.dto.response.MemberUpdateResponse;
 import com.programmers.heavenpay.member.service.MemberService;
 import io.swagger.annotations.ApiOperation;
@@ -66,7 +66,7 @@ public class MemberController {
     }
 
     @ApiOperation("회원(Member) 단건 수정, 성공시 수정된 Member 정보 반환")
-    @PatchMapping(value = "/{memberId}", consumes = MediaTypes.HAL_JSON_VALUE)
+    @PutMapping(value = "/{memberId}", consumes = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<ResponseDto> editInfo(@PathVariable Long memberId, @Valid @RequestBody MemberUpdateRequest request) {
         MemberUpdateResponse response = memberService.update(
                 memberId,
@@ -113,9 +113,9 @@ public class MemberController {
     @ApiOperation("회원(Member) 단건 조회, 성공시 Member 정보 반환")
     @GetMapping(value = "/{memberId}")
     public ResponseEntity<ResponseDto> getOne(@PathVariable Long memberId) {
-        MemberFindResponse response = memberService.findById(memberId);
+        MemberGetOneResponse response = memberService.findById(memberId);
 
-        EntityModel<MemberFindResponse> entityModel = EntityModel.of(
+        EntityModel<MemberGetOneResponse> entityModel = EntityModel.of(
                 response,
                 getLinkToAddress().withRel(LinkType.CREATE_METHOD).withType(HttpMethod.POST.name()),
                 getLinkToAddress().slash(response.getId()).withSelfRel().withType(HttpMethod.GET.name()),
@@ -133,7 +133,7 @@ public class MemberController {
     @ApiOperation("모든 회원(Member) 조회, 성공시 Member Page 반환")
     @GetMapping()
     public ResponseEntity<ResponseDto> getAll(Pageable pageable) {
-        Page<MemberFindResponse> responses = memberService.findAllByPages(pageable);
+        Page<MemberGetOneResponse> responses = memberService.findAllByPages(pageable);
 
         Link link = getLinkToAddress().withSelfRel().withType(HttpMethod.GET.name());
 

@@ -1,7 +1,7 @@
 package com.programmers.heavenpay.member.service;
 
 import com.programmers.heavenpay.member.converter.MemberConverter;
-import com.programmers.heavenpay.member.dto.response.MemberFindResponse;
+import com.programmers.heavenpay.member.dto.response.MemberGetOneResponse;
 import com.programmers.heavenpay.member.entity.Member;
 import com.programmers.heavenpay.member.entity.vo.GenderType;
 import com.programmers.heavenpay.member.repository.MemberRepository;
@@ -50,7 +50,7 @@ class MemberServiceTest {
             .gender(GENDER)
             .build();
 
-    MemberFindResponse findResponse = MemberFindResponse.builder()
+    MemberGetOneResponse findResponse = MemberGetOneResponse.builder()
             .id(MEMBER_ID)
             .email(EMAIL)
             .name(NAME)

@@ -5,7 +5,7 @@ import com.programmers.heavenpay.error.exception.NotExistsException;
 import com.programmers.heavenpay.member.converter.MemberConverter;
 import com.programmers.heavenpay.member.dto.response.MemberCreateResponse;
 import com.programmers.heavenpay.member.dto.response.MemberDeleteResponse;
-import com.programmers.heavenpay.member.dto.response.MemberFindResponse;
+import com.programmers.heavenpay.member.dto.response.MemberGetOneResponse;
 import com.programmers.heavenpay.member.dto.response.MemberUpdateResponse;
 import com.programmers.heavenpay.member.entity.Member;
 import com.programmers.heavenpay.member.repository.MemberRepository;
@@ -30,7 +30,7 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberFindResponse findById(Long id) {
+    public MemberGetOneResponse findById(Long id) {
         return memberRepository.findById(id)
                 .map(converter::toMemberFindResponse)
                 .orElseThrow(
@@ -39,7 +39,7 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Page<MemberFindResponse> findAllByPages(Pageable pageable){
+    public Page<MemberGetOneResponse> findAllByPages(Pageable pageable){
         return memberRepository.findAll(pageable)
                 .map(converter::toMemberFindResponse);
     }
