@@ -1,8 +1,5 @@
 package com.programmers.heavenpay.common.dto;
 
-import lombok.Getter;
-
-@Getter
 public final class LinkType {
     public static final String CREATE_METHOD = "create";
     public static final String READ_METHOD = "read";
