@@ -255,4 +255,6 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,gradle,macos,windows
 
-.yml
+# AWS 접속 키 : 절대 GIT에 올리지 말 것
+src/main/resources/aws.yml
+*.yml
