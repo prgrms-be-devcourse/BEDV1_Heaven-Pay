@@ -23,8 +23,8 @@ public class MemberService {
 
     @Transactional
     public MemberCreateResponse create(String email, String name, String phoneNumber, String birth, String gender) {
-        Member orginMemberEntity = converter.toMemberEntity(email, name, phoneNumber, birth, gender);
-        Member memberEntity = memberRepository.save(orginMemberEntity);
+        Member orginMember = converter.toMemberEntity(email, name, phoneNumber, birth, gender);
+        Member memberEntity = memberRepository.save(orginMember);
 
         return converter.toMemberCreateResponse(memberEntity);
     }
