@@ -38,15 +38,19 @@ public enum ResponseMessage {
     MEMBER_UPDATE_SUCCESS(HttpStatus.OK, "member 수정 성공"),
     MEMBER_DELETE_SUCCESS(HttpStatus.OK, "member 삭제 성공"),
     MEMBER_FIND_SUCCESS(HttpStatus.OK, "member 조회 성공"),
+    REVIEW_INSERT_SUCCESS(HttpStatus.CREATED, "review 생성 성공"),
+    REVIEW_DELETE_SUCCESS(HttpStatus.OK, "review 단건 삭제 성공"),
+    REVIEW_SEARCH_SUCCESS(HttpStatus.OK, "review 단건 조회 성공"),
+    REVIEW_UPDATE_SUCCESS(HttpStatus.OK, "review 수정 성공"),
+    POINT_WALLET_INSERT_SUCCESS(HttpStatus.OK, "포인트 지갑 생성 성공"),
+    POINT_WALLET_UPDATE_SUCCESS(HttpStatus.OK, "포인트 지갑 단건 삭제 성공"),
+    POINT_WALLET_DELETE_SUCCESS(HttpStatus.OK, "포인트 지갑 단건 조회 성공"),
+    POINT_WALLET_SEARCH_SUCCESS(HttpStatus.OK, "포인트 지갑 수정 성공"),
     POINT_HISTORY_INSERT_SUCCESS(HttpStatus.OK, "포인트 내역 데이터 추가 성공"),
     POINT_HISTORY_UPDATE_SUCCESS(HttpStatus.OK, "포인트 내역 데이터 수정 성공"),
     POINT_HISTORY_DELETE_SUCCESS(HttpStatus.OK, "포인트 내역 데이터 삭제 성공"),
     POINT_HISTORY_FIND_SUCCESS(HttpStatus.OK, "포인트 내역 데이터 단건 조회 성공"),
-    POINT_HISTORY_FIND_ALL_SUCCESS(HttpStatus.OK, "포인트 내역 데이터 전체 조회 성공"),
-    REVIEW_INSERT_SUCCESS(HttpStatus.OK, "리뷰 추가 성공"),
-    REVIEW_UPDATE_SUCCESS(HttpStatus.OK, "리뷰 수정 성공"),
-    REVIEW_DELETE_SUCCESS(HttpStatus.OK, "리뷰 삭제 성공"),
-    REVIEW_SEARCH_SUCCESS(HttpStatus.OK, "리뷰 조회 성공");
+    POINT_HISTORY_FIND_ALL_SUCCESS(HttpStatus.OK, "포인트 내역 데이터 전체 조회 성공");
 
     private final HttpStatus status;
     private final String message;
