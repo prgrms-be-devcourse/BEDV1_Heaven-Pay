@@ -25,6 +25,9 @@ public enum ResponseMessage {
     PRODUCT_SEARCH_SUCCESS(HttpStatus.OK, "product 단건 조회 성공"),
     PRODUCT_DELETE_SUCCESS(HttpStatus.OK, "product 단건 삭제 성공"),
     PRODUCT_UPDATE_SUCCESS(HttpStatus.OK, "product 수정 성공"),
+    ORDER_INSERT_SUCCESS(HttpStatus.CREATED, "신규 주문 생성 성공"),
+    ORDER_UPDATE_SUCCESS(HttpStatus.OK, "주문 수정 성공"),
+    ORDER_SEARCH_SUCCESS(HttpStatus.OK, "주문 단건 조회 성공"),
     WISH_INSERT_SUCCESS(HttpStatus.OK, "wish 생성 성공"),
     WISH_DELETE_SUCCESS(HttpStatus.OK, "wish 삭제 성공"),
     WISH_SEARCH_SUCCESS(HttpStatus.OK, "wish 검색 성공"),
@@ -35,10 +38,15 @@ public enum ResponseMessage {
     MEMBER_UPDATE_SUCCESS(HttpStatus.OK, "member 수정 성공"),
     MEMBER_DELETE_SUCCESS(HttpStatus.OK, "member 삭제 성공"),
     MEMBER_FIND_SUCCESS(HttpStatus.OK, "member 조회 성공"),
-    REVIEW_INSERT_SUCCESS(HttpStatus.CREATED, "review 생성 성공"),
-    REVIEW_DELETE_SUCCESS(HttpStatus.OK, "review 단건 삭제 성공"),
-    REVIEW_SEARCH_SUCCESS(HttpStatus.OK, "review 단건 조회 성공"),
-    REVIEW_UPDATE_SUCCESS(HttpStatus.OK, "review 수정 성공");
+    POINT_HISTORY_INSERT_SUCCESS(HttpStatus.OK, "포인트 내역 데이터 추가 성공"),
+    POINT_HISTORY_UPDATE_SUCCESS(HttpStatus.OK, "포인트 내역 데이터 수정 성공"),
+    POINT_HISTORY_DELETE_SUCCESS(HttpStatus.OK, "포인트 내역 데이터 삭제 성공"),
+    POINT_HISTORY_FIND_SUCCESS(HttpStatus.OK, "포인트 내역 데이터 단건 조회 성공"),
+    POINT_HISTORY_FIND_ALL_SUCCESS(HttpStatus.OK, "포인트 내역 데이터 전체 조회 성공"),
+    REVIEW_INSERT_SUCCESS(HttpStatus.OK, "리뷰 추가 성공"),
+    REVIEW_UPDATE_SUCCESS(HttpStatus.OK, "리뷰 수정 성공"),
+    REVIEW_DELETE_SUCCESS(HttpStatus.OK, "리뷰 삭제 성공"),
+    REVIEW_SEARCH_SUCCESS(HttpStatus.OK, "리뷰 조회 성공");
 
     private final HttpStatus status;
     private final String message;
