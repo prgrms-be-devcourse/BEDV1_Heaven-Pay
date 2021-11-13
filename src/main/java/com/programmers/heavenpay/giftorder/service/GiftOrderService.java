@@ -34,7 +34,7 @@ public class GiftOrderService {
     @Transactional
     public GiftOrderCreateResponse create(int quantity, Long memberId, Long targetMemberId, Long productId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID));
+                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER));
 
         Member targetMember = memberRepository.findById(targetMemberId)
                 .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_TARGET_MEMBER_ID));
@@ -71,7 +71,7 @@ public class GiftOrderService {
     @Transactional(readOnly = true)
     public Page<GiftOrderInfoResponse> findAllByPages(Long memberId, Pageable pageable) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID));
+                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER));
 
         Page<GiftOrder> giftOrderPage = giftOrderRepository.findAllByMember(member, pageable);
 
