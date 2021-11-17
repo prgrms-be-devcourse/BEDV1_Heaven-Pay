@@ -116,9 +116,7 @@ class AccountControllerTest {
             ACCOUNT_ID
     );
 
-    private AccountDeleteResponse accountDeleteResponse = AccountDeleteResponse.builder()
-            .id(ACCOUNT_ID)
-            .build();
+    private AccountDeleteResponse accountDeleteResponse = new AccountDeleteResponse(ACCOUNT_ID);
 
     @Test
     void 계좌_생성() throws Exception {
@@ -179,7 +177,7 @@ class AccountControllerTest {
         Link link = getLinkToAddress().withSelfRel().withType(HttpMethod.GET.name());
 
         // when
-        when(accountService.getAll(ACCOUNT_ID, pageable)).thenReturn(accountDetailAllResponses);
+        when(accountService.findAllByPages(ACCOUNT_ID, pageable)).thenReturn(accountDetailAllResponses);
         when(responseConverter.toResponseEntity(ResponseMessage.ACCOUNT_GET_ALL_SUCCESS, accountDetailAllResponses, link))
                 .thenReturn(ResponseEntity.ok(ResponseDto.of(ResponseMessage.ACCOUNT_GET_ALL_SUCCESS, accountDetailAllResponses, link)));
 

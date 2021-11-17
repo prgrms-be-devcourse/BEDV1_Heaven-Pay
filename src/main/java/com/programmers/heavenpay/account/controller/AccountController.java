@@ -12,7 +12,6 @@ import com.programmers.heavenpay.common.dto.ResponseDto;
 import com.programmers.heavenpay.common.dto.ResponseMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
@@ -30,10 +29,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @Api(tags = "Account")
 @RestController
 @RequestMapping(value = "/api/v1/accounts", produces = MediaTypes.HAL_JSON_VALUE)
-@RequiredArgsConstructor
 public class AccountController {
     private final AccountService accountService;
     private final ResponseConverter responseConverter;
+
+    public AccountController(AccountService accountService, ResponseConverter responseConverter) {
+        this.accountService = accountService;
+        this.responseConverter = responseConverter;
+    }
 
     private WebMvcLinkBuilder getLinkToAddress() {
         return linkTo(AccountController.class);
@@ -41,7 +44,7 @@ public class AccountController {
 
     @ApiOperation("계좌 생성")
     @PostMapping(consumes = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<ResponseDto> add(@Valid @RequestBody AccountCreateRequest request) {
+    public ResponseEntity<ResponseDto> insert(@Valid @RequestBody AccountCreateRequest request) {
         AccountCreateResponse response = accountService.create(
                 request.getMemberId(),
                 request.getTitle(),
@@ -66,7 +69,7 @@ public class AccountController {
 
     @ApiOperation("계좌 단건 조회")
     @GetMapping(value = "/{accountId}", consumes = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<ResponseDto> get(@PathVariable Long accountId, @Valid @RequestBody AccountGetRequest request) {
+    public ResponseEntity<ResponseDto> getOne(@PathVariable Long accountId, @Valid @RequestBody AccountGetRequest request) {
         AccountDetailResponse response = accountService.getOne(accountId, request.getMemberId());
 
         EntityModel<AccountDetailResponse> entityModel = EntityModel.of(response,
@@ -86,7 +89,7 @@ public class AccountController {
     @ApiOperation("계좌 전체 조회")
     @GetMapping(consumes = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<ResponseDto> getAll(@Valid @RequestBody AccountGetRequest request, Pageable pageable) {
-        Page<AccountDetailAllResponse> response = accountService.getAll(request.getMemberId(), pageable);
+        Page<AccountDetailAllResponse> response = accountService.findAllByPages(request.getMemberId(), pageable);
 
         Link link = getLinkToAddress().withSelfRel().withType(HttpMethod.GET.name());
 

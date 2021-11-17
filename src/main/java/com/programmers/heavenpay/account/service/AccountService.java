@@ -10,19 +10,24 @@ import com.programmers.heavenpay.finance.entity.Finance;
 import com.programmers.heavenpay.finance.repository.FinanceRepository;
 import com.programmers.heavenpay.member.entity.Member;
 import com.programmers.heavenpay.member.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class AccountService {
     private final AccountConverter accountConverter;
     private final AccountRepository accountRepository;
     private final MemberRepository memberRepository;
     private final FinanceRepository financeRepository;
+
+    public AccountService(AccountConverter accountConverter, AccountRepository accountRepository, MemberRepository memberRepository, FinanceRepository financeRepository) {
+        this.accountConverter = accountConverter;
+        this.accountRepository = accountRepository;
+        this.memberRepository = memberRepository;
+        this.financeRepository = financeRepository;
+    }
 
     @Transactional
     public AccountCreateResponse create(Long memberId, String title, String description, String number, Long financeId) {
@@ -57,7 +62,7 @@ public class AccountService {
     }
 
     @Transactional(readOnly = true)
-    public Page<AccountDetailAllResponse> getAll(Long memberId, Pageable pageable) {
+    public Page<AccountDetailAllResponse> findAllByPages(Long memberId, Pageable pageable) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(
                         () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER)
