@@ -1,14 +1,9 @@
 package com.programmers.heavenpay.review.dto.request;
 
-import lombok.Builder;
-import lombok.Getter;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
-@Builder
-@Getter
 public class ReviewCreateRequest {
     @Min(value = 1L, message = "reviewerId 는 1보다 커야 합니다.")
     private Long reviewerId;
@@ -22,4 +17,27 @@ public class ReviewCreateRequest {
 
     @Min(value = 1L, message = "productId 는 1보다 커야 합니다.")
     private Long productId;
+
+    public ReviewCreateRequest(Long reviewerId, String content, int score, Long productId) {
+        this.reviewerId = reviewerId;
+        this.content = content;
+        this.score = score;
+        this.productId = productId;
+    }
+
+    public Long getReviewerId() {
+        return reviewerId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
 }

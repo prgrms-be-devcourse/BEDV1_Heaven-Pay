@@ -1,10 +1,13 @@
 package com.programmers.heavenpay.review.dto.response;
 
-import lombok.Builder;
-import lombok.Getter;
-
-@Builder
-@Getter
 public class ReviewDeleteResponse {
     private final Long id;
+
+    public ReviewDeleteResponse(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
