@@ -4,10 +4,9 @@ import com.programmers.heavenpay.common.converter.ResponseConverter;
 import com.programmers.heavenpay.common.dto.LinkType;
 import com.programmers.heavenpay.common.dto.ResponseDto;
 import com.programmers.heavenpay.common.dto.ResponseMessage;
-import com.programmers.heavenpay.member.controller.MemberController;
 import com.programmers.heavenpay.pointWallet.dto.request.PointWalletCreateRequest;
 import com.programmers.heavenpay.pointWallet.dto.request.PointWalletDeleteRequest;
-import com.programmers.heavenpay.pointWallet.dto.request.PointWalletGetRequest;
+import com.programmers.heavenpay.pointWallet.dto.request.PointWalletGetOneRequest;
 import com.programmers.heavenpay.pointWallet.dto.request.PointWalletUpdateRequest;
 import com.programmers.heavenpay.pointWallet.dto.response.PointWalletCreateResponse;
 import com.programmers.heavenpay.pointWallet.dto.response.PointWalletDeleteResponse;
@@ -17,7 +16,6 @@ import com.programmers.heavenpay.pointWallet.service.PointWalletService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.HttpMethod;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
@@ -34,10 +32,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @Api(tags = "PointWallet")
 @RestController
 @RequestMapping(value = "/api/v1/point_wallets", produces = MediaTypes.HAL_JSON_VALUE)
-@RequiredArgsConstructor
 public class PointWalletController {
     private final PointWalletService pointWalletService;
     private final ResponseConverter responseConverter;
+
+    public PointWalletController(PointWalletService pointWalletService, ResponseConverter responseConverter) {
+        this.pointWalletService = pointWalletService;
+        this.responseConverter = responseConverter;
+    }
 
     private WebMvcLinkBuilder getLinkToAddress() {
         return linkTo(PointWalletController.class);
@@ -114,7 +116,7 @@ public class PointWalletController {
 
     @ApiOperation("포인트 지갑 단건 조회, 성공시 지갑 정보 반환")
     @GetMapping(value = "/{pointWalletId}")
-    public ResponseEntity<ResponseDto> findOne(@PathVariable Long pointWalletId, @Valid @RequestBody PointWalletGetRequest request) {
+    public ResponseEntity<ResponseDto> readSingleData(@PathVariable Long pointWalletId, @Valid @RequestBody PointWalletGetOneRequest request) {
         PointWalletGetOneResponse response = pointWalletService.getOne(pointWalletId,
                 request.getMemberId(),
                 request.getAccountId());
@@ -129,20 +131,20 @@ public class PointWalletController {
         );
 
         return responseConverter.toResponseEntity(
-                ResponseMessage.POINT_WALLET_SEARCH_SUCCESS,
+                ResponseMessage.POINT_WALLET_READ_ONE_SUCCESS,
                 entityModel
         );
     }
 
     @ApiOperation("모든 포인트 지갑 조회, 성공시 지갑 Page 반환")
     @GetMapping()
-    public ResponseEntity<ResponseDto> findAll(Pageable pageable) {
+    public ResponseEntity<ResponseDto> readPage(Pageable pageable) {
         Page<PointWalletGetOneResponse> responses = pointWalletService.getAll(pageable);
 
         Link link = getLinkToAddress().withSelfRel().withType(HttpMethod.GET.name());
 
         return responseConverter.toResponseEntity(
-                ResponseMessage.POINT_WALLET_SEARCH_SUCCESS,
+                ResponseMessage.POINT_WALLET_READ_ALL_SUCCESS,
                 responses,
                 link
         );

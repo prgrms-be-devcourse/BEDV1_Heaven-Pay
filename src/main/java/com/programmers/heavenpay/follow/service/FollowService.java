@@ -9,27 +9,30 @@ import com.programmers.heavenpay.follow.entity.vo.FollowStatus;
 import com.programmers.heavenpay.follow.repository.FollowRepository;
 import com.programmers.heavenpay.member.entity.Member;
 import com.programmers.heavenpay.member.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class FollowService {
     private final FollowRepository followRepository;
     private final MemberRepository memberRepository;
+
+    public FollowService(FollowRepository followRepository, MemberRepository memberRepository) {
+        this.followRepository = followRepository;
+        this.memberRepository = memberRepository;
+    }
 
     @Transactional
     public FollowResponse follow(Long memberId, Long followerId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(
-                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID)
+                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER)
                 );
         Member follower = memberRepository.findById(followerId)
                 .orElseThrow(
-                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID)
+                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER)
                 );
 
         Follow followInstance = new Follow(member, follower);
@@ -41,11 +44,11 @@ public class FollowService {
     public FollowResponse unfollow(Long memberId, Long followerId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(
-                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID)
+                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER)
                 );
         Member follower = memberRepository.findById(followerId)
                 .orElseThrow(
-                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID)
+                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER)
                 );
         followRepository.deleteByToMemberAndFromMember(member, follower);
         return new FollowResponse(FollowStatus.UNFOLLOWING, follower.getName());
@@ -55,7 +58,7 @@ public class FollowService {
     public Page<FollowFindResponse> findFollow(Long memberId, Pageable pageable) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(
-                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID)
+                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER)
                 );
         return followRepository.findByToMember(member, pageable)
                 .map(
@@ -70,7 +73,7 @@ public class FollowService {
     public Page<FollowFindResponse> findFollower(Long memberId, Pageable pageable) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(
-                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID)
+                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER)
                 );
         return followRepository.findByFromMember(member, pageable)
                 .map(

@@ -10,7 +10,6 @@ import com.programmers.heavenpay.finance.dto.response.FinanceDetailResponse;
 import com.programmers.heavenpay.finance.dto.response.FinanceUpdateResponse;
 import com.programmers.heavenpay.finance.entity.Finance;
 import com.programmers.heavenpay.finance.repository.FinanceRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,24 +18,31 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Objects;
 
 @Service
-@RequiredArgsConstructor
 public class FinanceService {
     private final FinanceRepository financeRepository;
     private final FinanceConverter financeConverter;
+
+    public FinanceService(FinanceRepository financeRepository, FinanceConverter financeConverter) {
+        this.financeRepository = financeRepository;
+        this.financeConverter = financeConverter;
+    }
 
     @Transactional
     public FinanceCreateResponse create(Long id, String name, String type) {
         if (existsByName(name)) {
             throw new DuplicationException(ErrorMessage.DUPLICATION_FINANCE_NAME);
         }
+
         Finance financeInstance = financeConverter.toFinanceEntity(name, type);
         financeInstance.addCreatedAndLastModifiedMember(id);
+
         Finance financeEntity = financeRepository.save(financeInstance);
+
         return financeConverter.toFinanceCreateResponse(financeEntity);
     }
 
     @Transactional(readOnly = true)
-    public FinanceDetailResponse getOne(Long financeId) {
+    public FinanceDetailResponse findById(Long financeId) {
         Finance finance = financeRepository.findById(financeId)
                 .orElseThrow(() -> {
                     throw new NotExistsException(ErrorMessage.NOT_EXIST_FINANCE);
@@ -45,7 +51,7 @@ public class FinanceService {
     }
 
     @Transactional(readOnly = true)
-    public Page<FinanceDetailResponse> getAll(Pageable pageable) {
+    public Page<FinanceDetailResponse> findAllByPages(Pageable pageable) {
         return financeRepository.findAll(pageable)
                 .map(financeConverter::toFinanceDetailResponse);
     }
@@ -56,10 +62,13 @@ public class FinanceService {
                 .orElseThrow(() -> {
                     throw new NotExistsException(ErrorMessage.NOT_EXIST_FINANCE);
                 });
+
         if (existsByName(name) && !Objects.equals(finance.getName(), name)) {
             throw new DuplicationException(ErrorMessage.DUPLICATION_FINANCE_NAME);
         }
+
         finance.update(memberId, name, type);
+
         return financeConverter.toFinanceUpdateResponse(finance);
     }
 
@@ -73,7 +82,9 @@ public class FinanceService {
                 .orElseThrow(() -> {
                     throw new NotExistsException(ErrorMessage.NOT_EXIST_FINANCE);
                 });
+
         financeRepository.deleteById(financeId);
+
         return financeConverter.toFinanceDeleteResponse(finance);
     }
 }

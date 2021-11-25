@@ -1,14 +1,22 @@
 package com.programmers.heavenpay.review.dto.response;
 
-import lombok.Builder;
-import lombok.Getter;
-
 import java.time.LocalDateTime;
 
-@Builder
-@Getter
 public class ReviewCreateResponse {
     private final Long id;
 
     private final LocalDateTime createdAt;
+
+    public ReviewCreateResponse(Long id, LocalDateTime createdAt) {
+        this.id = id;
+        this.createdAt = createdAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

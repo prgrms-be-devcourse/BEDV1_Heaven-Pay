@@ -13,19 +13,30 @@ import com.programmers.heavenpay.review.dto.response.ReviewInfoResponse;
 import com.programmers.heavenpay.review.dto.response.ReviewUpdateResponse;
 import com.programmers.heavenpay.review.entity.Review;
 import com.programmers.heavenpay.review.repository.ReviewRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ReviewConverter reviewConverter;
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
+
+    public ReviewService(
+            ReviewRepository reviewRepository,
+            ReviewConverter reviewConverter,
+            ProductRepository productRepository,
+            MemberRepository memberRepository
+    ) {
+
+        this.reviewRepository = reviewRepository;
+        this.reviewConverter = reviewConverter;
+        this.productRepository = productRepository;
+        this.memberRepository = memberRepository;
+    }
 
     @Transactional
     public ReviewCreateResponse create(Long reviewerId, String content, int score, Long productId) {
@@ -33,7 +44,7 @@ public class ReviewService {
                 .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_PRODUCT));
 
         Member reviewer = memberRepository.findById(reviewerId)
-                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID));
+                .orElseThrow(() -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER));
 
         Review review = reviewConverter.toReviewEntity(content, score, product, reviewer);
         Review reviewEntity = reviewRepository.save(review);

@@ -13,14 +13,12 @@ import com.programmers.heavenpay.member.dto.response.MemberUpdateResponse;
 import com.programmers.heavenpay.member.service.MemberService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.HttpMethod;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,11 +27,15 @@ import javax.validation.Valid;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/members", produces = MediaTypes.HAL_JSON_VALUE)
 public class MemberController {
     private final MemberService memberService;
     private final ResponseConverter responseConverter;
+
+    public MemberController(MemberService memberService, ResponseConverter responseConverter) {
+        this.memberService = memberService;
+        this.responseConverter = responseConverter;
+    }
 
     private WebMvcLinkBuilder getLinkToAddress() {
         return linkTo(MemberController.class);
@@ -60,7 +62,7 @@ public class MemberController {
         );
 
         return responseConverter.toResponseEntity(
-                ResponseMessage.MEMBER_INSERT_SUCCESS,
+                ResponseMessage.MEMBER_CREATE_SUCCESS,
                 entityModel
         );
     }
@@ -112,8 +114,8 @@ public class MemberController {
 
     @ApiOperation("회원(Member) 단건 조회, 성공시 Member 정보 반환")
     @GetMapping(value = "/{memberId}")
-    public ResponseEntity<ResponseDto> getOne(@PathVariable Long memberId) {
-        MemberGetOneResponse response = memberService.findById(memberId);
+    public ResponseEntity<ResponseDto> readSingleData(@PathVariable Long memberId) {
+        MemberGetOneResponse response = memberService.getOne(memberId);
 
         EntityModel<MemberGetOneResponse> entityModel = EntityModel.of(
                 response,
@@ -125,20 +127,20 @@ public class MemberController {
         );
 
         return responseConverter.toResponseEntity(
-                ResponseMessage.MEMBER_FIND_SUCCESS,
+                ResponseMessage.MEMBER_READ_ONE_SUCCESS,
                 entityModel
         );
     }
 
     @ApiOperation("모든 회원(Member) 조회, 성공시 Member Page 반환")
     @GetMapping()
-    public ResponseEntity<ResponseDto> getAll(Pageable pageable) {
-        Page<MemberGetOneResponse> responses = memberService.findAllByPages(pageable);
+    public ResponseEntity<ResponseDto> readPage(Pageable pageable) {
+        Page<MemberGetOneResponse> responses = memberService.getAll(pageable);
 
         Link link = getLinkToAddress().withSelfRel().withType(HttpMethod.GET.name());
 
         return responseConverter.toResponseEntity(
-                ResponseMessage.MEMBER_FIND_SUCCESS,
+                ResponseMessage.MEMBER_READ_ALL_SUCCESS,
                 responses,
                 link
         );

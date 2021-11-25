@@ -14,14 +14,12 @@ import com.programmers.heavenpay.remittance.dto.response.RemittanceDetailAllResp
 import com.programmers.heavenpay.remittance.dto.response.RemittanceGetResponse;
 import com.programmers.heavenpay.remittance.entity.Remittance;
 import com.programmers.heavenpay.remittance.repository.RemittanceRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class RemittanceService {
     private final RemittanceRepository remittanceRepository;
     private final MemberRepository memberRepository;
@@ -29,11 +27,19 @@ public class RemittanceService {
     private final FinanceRepository financeRepository;
     private final RemittanceConverter remittanceConverter;
 
+    public RemittanceService(RemittanceRepository remittanceRepository, MemberRepository memberRepository, AccountRepository accountRepository, FinanceRepository financeRepository, RemittanceConverter remittanceConverter) {
+        this.remittanceRepository = remittanceRepository;
+        this.memberRepository = memberRepository;
+        this.accountRepository = accountRepository;
+        this.financeRepository = financeRepository;
+        this.remittanceConverter = remittanceConverter;
+    }
+
     @Transactional
     public RemittanceCreateResponse create(Long memberId, Long accountId, Long financeId, String name, String number, Integer money) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(
-                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID)
+                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER)
                 );
 
         Account account = accountRepository.findByIdAndMember(accountId, member)
@@ -54,10 +60,10 @@ public class RemittanceService {
     }
 
     @Transactional(readOnly = true)
-    public RemittanceGetResponse get(Long memberId, Long remittanceId) {
+    public RemittanceGetResponse getOne(Long memberId, Long remittanceId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(
-                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID)
+                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER)
                 );
         Remittance remittance = remittanceRepository.findByIdAndMember(remittanceId, member)
                 .orElseThrow(
@@ -71,7 +77,7 @@ public class RemittanceService {
     public Page<RemittanceDetailAllResponse> getAll(Long memberId, Pageable pageable) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(
-                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER_ID)
+                        () -> new NotExistsException(ErrorMessage.NOT_EXIST_MEMBER)
                 );
         return remittanceRepository.findByMember(member, pageable)
                 .map(remittanceConverter::toRemittanceDetailAllResponse);
